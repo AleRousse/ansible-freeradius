@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+# Any changes made here will be lost
+
+
+{% for item in freeradius_subnet %}
+client {{ item.name }} {
+        ipaddr = {{ item.subnet }}/{{ item.cidr }}
+        proto = {{ item.protocol | default("*", true) }}
+        secret = {{ freeradius_secret }}
+        nas_type = {{ item.nas_type | default("other",true) }}
+        limit {
+                max_connections = {{ item.max_connections| default("16",true) }}
+                lifetime = {{ item.lifetime | default("0",true) }}
+                idle_timeout = {{ item.idle_timeout | default("30",true) }}
+        }
+}
+{% endfor %}

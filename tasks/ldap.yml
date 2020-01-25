@@ -1,0 +1,30 @@
+---
+
+- name: Add LDAP to the enabled mods
+  file:
+    src: /etc/raddb/mods-available/ldap
+    dest: /etc/raddb/mods-enabled/ldap
+    owner: root
+    group: radiusd
+    state: link
+  become: true
+
+
+- name: Template a file to /etc/raddb/proxy.conf
+  template:
+    src: proxy.conf.j2
+    dest: /etc/raddb/proxy.conf
+
+# Setup mods default
+- name: Setup ldap configuration
+  template:
+    src: ldap.j2
+    dest: /etc/raddb/mods-available/ldap
+    group: radiusd
+    owner: root
+
+- name: Config Perm of /etc/raddb/mods-enabled/ldap
+  file:
+    path: /etc/raddb/mods-enabled/ldap
+    owner: root
+    group: radiusd

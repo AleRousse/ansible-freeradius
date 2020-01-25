@@ -1,0 +1,26 @@
+---
+- name: Ensure Freeradius is installed on RHEL.
+  package:
+    name: "{{ freeradius_packages }}"
+    state: present
+
+- name: Template a file to /etc/raddb/clients.conf
+  template:
+    src: clients.conf.j2
+    dest: /etc/raddb/clients.conf
+
+# Setup mods default
+- name: Template a file to /etc/raddb/sites-enabled/default
+  template:
+    src: default.j2
+    dest: /etc/raddb/sites-enabled/default
+
+# Setup mods inner-tunnel
+- name: Template a file to /etc/raddb/sites-enabled/inner-tunnel
+  template:
+    src: inner-tunnel.j2
+    dest: /etc/raddb/sites-enabled/inner-tunnel
+
+# Setup/install ldap
+- include_tasks: "ldap.yml"
+  when:   '"ldap" in freeradius_modenabled'

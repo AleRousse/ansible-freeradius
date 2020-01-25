@@ -1,0 +1,7 @@
+---
+freeradius_secret: secret
+freeradius_subnet:
+  - name: localhost
+    subnet: 127.0.0.1
+    cidr: 0
+

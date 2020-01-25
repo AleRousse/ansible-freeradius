@@ -1,0 +1,6 @@
+---
+freeradius_packages:
+  - freeradius
+  - freeradius-ldap
+  - freeradius-utils
+  - freeradius-krb5
