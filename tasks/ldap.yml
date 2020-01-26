@@ -8,12 +8,14 @@
     group: radiusd
     state: link
   become: true
+  notify: restart radiusd
 
 
 - name: Template a file to /etc/raddb/proxy.conf
   template:
     src: proxy.conf.j2
     dest: /etc/raddb/proxy.conf
+  notify: restart radiusd
 
 # Setup mods default
 - name: Setup ldap configuration
@@ -22,9 +24,11 @@
     dest: /etc/raddb/mods-available/ldap
     group: radiusd
     owner: root
+  notify: restart radiusd
 
 - name: Config Perm of /etc/raddb/mods-enabled/ldap
   file:
     path: /etc/raddb/mods-enabled/ldap
     owner: root
     group: radiusd
+  notify: restart radiusd

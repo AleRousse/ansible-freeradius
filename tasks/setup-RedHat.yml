@@ -8,19 +8,28 @@
   template:
     src: clients.conf.j2
     dest: /etc/raddb/clients.conf
+  notify: restart radiusd
 
 # Setup mods default
 - name: Template a file to /etc/raddb/sites-enabled/default
   template:
     src: default.j2
     dest: /etc/raddb/sites-enabled/default
+  notify: restart radiusd
 
 # Setup mods inner-tunnel
 - name: Template a file to /etc/raddb/sites-enabled/inner-tunnel
   template:
     src: inner-tunnel.j2
     dest: /etc/raddb/sites-enabled/inner-tunnel
+  notify: restart radiusd
 
 # Setup/install ldap
 - include_tasks: "ldap.yml"
   when:   '"ldap" in freeradius_modenabled'
+
+- name: Add firewall rule
+  firewalld:
+    port: 1812/udp
+    permanent: yes
+    state: disabled

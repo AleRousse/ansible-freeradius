@@ -5,3 +5,9 @@
 
 # Setup/install tasks.
 - include_tasks: "setup-{{ ansible_os_family }}.yml"
+
+- name: Start radiusd
+  service:
+    name: radiusd
+    state: started
+    enabled: yes
